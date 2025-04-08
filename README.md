@@ -1,8 +1,8 @@
 ![Logo](https://github.com/Easy-Market-SPL/.github/blob/main/Banner.png?raw=true)
 
-# EasyMarket Products Service
+# EasyMarket Reviews Service
 
-Microservicio encargado del CRUD de productos de la SPL EasyMarket
+Microservicio encargado de las calificaciones de productos de la SPL EasyMarket
 
 ---
 ## Stack Tecnológico 🛠️
@@ -61,13 +61,13 @@ https://github.com/Easy-Market-SPL/dev-infrastructure
 Clona el proyecto
 
 ```bash
-  git clone https://github.com/Easy-Market-SPL/products-service
+  git clone https://github.com/Easy-Market-SPL/reviews-service
 ```
 
 Ve al directorio del proyecto
 
 ```bash
-  cd products-service
+  cd reviews-service
 ```
 
 Instala las dependencias
