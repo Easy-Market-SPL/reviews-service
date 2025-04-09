@@ -1,7 +1,6 @@
 package co.edu.javeriana.easymarket.reviewsservice.mappers;
 
 import co.edu.javeriana.easymarket.reviewsservice.dtos.ReviewDTO;
-import co.edu.javeriana.easymarket.reviewsservice.dtos.entry_data.UpdateReviewDTO;
 import co.edu.javeriana.easymarket.reviewsservice.models.Review;
 import org.springframework.stereotype.Component;
 import org.modelmapper.ModelMapper;
@@ -20,13 +19,5 @@ public class ReviewMapper {
 
     public Review reviewDTOToReview(ReviewDTO reviewDTO) {
         return modelMapper.map(reviewDTO, Review.class);
-    }
-
-    /// Method for only update needed fields
-    public void updateReviewFromDTO(UpdateReviewDTO reviewDTO, Review existingReview) {
-        existingReview.setCalification(reviewDTO.calification());
-        if (reviewDTO.commentary().isPresent()) {
-            existingReview.setCommentary(reviewDTO.commentary().get());
-        }
     }
 }
