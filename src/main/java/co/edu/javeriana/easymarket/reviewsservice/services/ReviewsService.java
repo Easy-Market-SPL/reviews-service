@@ -106,7 +106,10 @@ public class ReviewsService {
         Review review = reviewRepository.findById(idReview).orElseThrow();
 
         // Update the review fields
-        reviewMapper.updateReviewFromDTO(updateReviewDTO, review);
+        review.setCalification(updateReviewDTO.calification());
+        if (updateReviewDTO.commentary().isPresent()) {
+            review.setCommentary(updateReviewDTO.commentary().get());
+        }
 
         // Save the updated review
         Review updatedReview = reviewRepository.save(review);
