@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 
 @Getter
 @Setter
@@ -30,6 +31,10 @@ public class Review {
 
     @Column(name = "id_user", nullable = false, length = 36)
     private String idUser;
+
+    @ColumnDefault("false")
+    @Column(name = "purchased_review")
+    private Boolean purchasedReview;
 
     ///  Create Review from CreateReviewDTO
     public Review (CreateReviewDTO createReviewDTO, Product product) {

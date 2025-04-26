@@ -6,11 +6,10 @@ import co.edu.javeriana.easymarket.reviewsservice.dtos.out_data.GetReviewAverage
 import co.edu.javeriana.easymarket.reviewsservice.dtos.ReviewDTO;
 import co.edu.javeriana.easymarket.reviewsservice.exception.error_messages.LogicErrorMessages;
 import co.edu.javeriana.easymarket.reviewsservice.mappers.ReviewMapper;
+import co.edu.javeriana.easymarket.reviewsservice.models.Order;
 import co.edu.javeriana.easymarket.reviewsservice.models.Product;
 import co.edu.javeriana.easymarket.reviewsservice.models.Review;
-import co.edu.javeriana.easymarket.reviewsservice.repository.ProductRepository;
-import co.edu.javeriana.easymarket.reviewsservice.repository.ReviewRepository;
-import co.edu.javeriana.easymarket.reviewsservice.repository.UserRepository;
+import co.edu.javeriana.easymarket.reviewsservice.repository.*;
 import co.edu.javeriana.easymarket.reviewsservice.services.helpers.ValidationService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -31,6 +30,7 @@ public class ReviewsService {
 
     // Validation Service:
     private final ValidationService validationService;
+    private final OrderRepository orderRepository;
 
     ///  GET ALL REVIEWS
     public List<ReviewDTO> getAllReviews() {
@@ -49,6 +49,15 @@ public class ReviewsService {
         Product product = productRepository.findById(reviewDTO.idProduct()).orElseThrow();
 
         Review review = new Review(reviewDTO, product);
+        // Check if the user has purchased the product on the OrderProductRepository taking for account the product code and the user id of the order
+        List<Order> userOrders = orderRepository.findOrdersByIdUser(reviewDTO.idUser());
+
+        boolean hasPurchased = userOrders.stream()
+                .flatMap(order -> order.getOrderProducts().stream())
+                .anyMatch(orderProduct -> orderProduct.getId().getProductCode().equals(product.getCode()));
+
+        review.setPurchasedReview(hasPurchased);
+
         Review savedReview = reviewRepository.save(review);
         return reviewMapper.reviewToreviewDTO(savedReview);
     }

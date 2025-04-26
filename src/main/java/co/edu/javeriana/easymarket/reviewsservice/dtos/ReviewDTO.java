@@ -16,4 +16,5 @@ public class ReviewDTO {
     String commentary;
     String productCode;
     String idUser;
+    Boolean purchasedReview;
 }

@@ -59,7 +59,7 @@ public class ReviewsServiceTest {
         review = new Review(new CreateReviewDTO("A12345", "8e73a3da-41cc-455b-b8b0-2e1ae6296df9", 4.5f, Optional.of("Good product")), product);
 
         // Mock methods
-        when(reviewMapper.reviewToreviewDTO(any(Review.class))).thenReturn(new ReviewDTO(1, 4.5f, "Good product", "productId", "userId"));
+        when(reviewMapper.reviewToreviewDTO(any(Review.class))).thenReturn(new ReviewDTO(1, 4.5f, "Good product", "productId", "userId", true));
         when(reviewRepository.save(any(Review.class))).thenReturn(review);
     }
 
@@ -130,7 +130,7 @@ public class ReviewsServiceTest {
 
         // Configuring the mock for the mapper
         when(reviewMapper.reviewToreviewDTO(any(Review.class)))
-                .thenReturn(new ReviewDTO(1, 4.8f, "Updated review", "productId", "userId"));
+                .thenReturn(new ReviewDTO(1, 4.8f, "Updated review", "productId", "userId", true));
 
         ReviewDTO updatedReview = reviewsService.updateReview(1, updateReviewDTO);
 
