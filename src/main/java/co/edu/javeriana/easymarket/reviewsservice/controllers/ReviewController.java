@@ -39,6 +39,13 @@ public class ReviewController {
         return ResponseEntity.ok(reviews);
     }
 
+    ///  GET ALL PRODUCTS AVERAGE CALIFICATIONS
+    @GetMapping("/average")
+    public ResponseEntity<List<GetReviewAverageDTO>> getAllProductsAverageRatings() {
+        List<GetReviewAverageDTO> averages = reviewService.getAllProductsAverageRatings();
+        return ResponseEntity.ok(averages);
+    }
+
     ///  GET REVIEW AVERAGE BY ID
     @GetMapping("/average/{idProduct}")
     public ResponseEntity<GetReviewAverageDTO> getReviewAverageById(@PathVariable String idProduct) {

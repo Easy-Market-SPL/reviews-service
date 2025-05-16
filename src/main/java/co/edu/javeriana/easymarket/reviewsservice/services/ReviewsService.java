@@ -99,6 +99,17 @@ public class ReviewsService {
         return reviewMapper.reviewToreviewDTO(review);
     }
 
+    /// GET ALL AVERAGE CALIFICATIONS
+    public List<GetReviewAverageDTO> getAllProductsAverageRatings() {
+    List<Object[]> averageRatings = reviewRepository.findAllProductsAverageRatings();
+    return averageRatings.stream()
+        .map(result -> new GetReviewAverageDTO(
+            (String) result[0],  // productId
+            ((Double) result[1]).floatValue()  // averageRating
+        ))
+        .collect(Collectors.toList());
+    }
+
     ///  GET AVERAGE CALIFICATION BY PRODUCT ID
     public GetReviewAverageDTO getReviewAverage(String idProduct){
         List<Review> reviews = reviewRepository.findReviewsByProductCode(productRepository.findById(idProduct).orElseThrow());
