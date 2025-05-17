@@ -4,6 +4,7 @@ import co.edu.javeriana.easymarket.reviewsservice.dtos.entry_data.CreateReviewDT
 import co.edu.javeriana.easymarket.reviewsservice.dtos.entry_data.UpdateReviewDTO;
 import co.edu.javeriana.easymarket.reviewsservice.dtos.out_data.GetReviewAverageDTO;
 import co.edu.javeriana.easymarket.reviewsservice.dtos.ReviewDTO;
+import co.edu.javeriana.easymarket.reviewsservice.exception.business_exceptions.BadRequestException;
 import co.edu.javeriana.easymarket.reviewsservice.exception.error_messages.LogicErrorMessages;
 import co.edu.javeriana.easymarket.reviewsservice.mappers.ReviewMapper;
 import co.edu.javeriana.easymarket.reviewsservice.models.Order;
@@ -52,14 +53,18 @@ public class ReviewsService {
         // Check if the user has purchased the product on the OrderProductRepository taking for account the product code and the user id of the order
         List<Order> userOrders = orderRepository.findOrdersByIdUser(reviewDTO.idUser());
 
-        boolean hasPurchased = userOrders.stream()
-                .flatMap(order -> order.getOrderProducts().stream())
-                .anyMatch(orderProduct -> orderProduct.getId().getProductCode().equals(product.getCode()));
+        // See if the user has purchased the product
+        try {
+            boolean hasPurchased = userOrders.stream()
+                    .anyMatch(order -> order.getOrderProducts().stream()
+                            .anyMatch(orderProduct -> orderProduct.getId().getProductCode().equals(reviewDTO.idProduct())));
 
-        review.setPurchasedReview(hasPurchased);
-
-        Review savedReview = reviewRepository.save(review);
-        return reviewMapper.reviewToreviewDTO(savedReview);
+            review.setPurchasedReview(hasPurchased);
+            Review savedReview = reviewRepository.save(review);
+            return reviewMapper.reviewToreviewDTO(savedReview);
+        } catch (Exception e) {
+            throw new BadRequestException("Unable to check if the user has purchased the product: " + e.getMessage());
+        }
     }
 
     ///  GET REVIEWS BY USER
