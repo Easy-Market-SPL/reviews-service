@@ -56,8 +56,10 @@ public class ReviewsService {
         // See if the user has purchased the product
         try {
             boolean hasPurchased = userOrders.stream()
-                    .anyMatch(order -> order.getOrderProducts().stream()
-                            .anyMatch(orderProduct -> orderProduct.getId().getProductCode().equals(reviewDTO.idProduct())));
+                    .anyMatch(order -> order.getIdUser().equals(reviewDTO.idUser())
+                            && order.getOrderProducts().stream()
+                            .anyMatch(orderProduct -> orderProduct.getId().getProductCode().equals(reviewDTO.idProduct())
+                            ));
 
             review.setPurchasedReview(hasPurchased);
             Review savedReview = reviewRepository.save(review);
