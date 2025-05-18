@@ -1,4 +1,5 @@
-# start.sh
+#!/bin/bash
+
 if [ "$RATINGS_ENABLED" = "true" ]; then
   exec java -jar /app/app.jar
 else
