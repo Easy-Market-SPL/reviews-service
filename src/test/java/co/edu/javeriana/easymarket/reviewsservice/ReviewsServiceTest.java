@@ -8,6 +8,7 @@ import co.edu.javeriana.easymarket.reviewsservice.exception.business_exceptions.
 import co.edu.javeriana.easymarket.reviewsservice.models.Product;
 import co.edu.javeriana.easymarket.reviewsservice.models.Review;
 import co.edu.javeriana.easymarket.reviewsservice.models.User;
+import co.edu.javeriana.easymarket.reviewsservice.repository.OrderRepository;
 import co.edu.javeriana.easymarket.reviewsservice.repository.ProductRepository;
 import co.edu.javeriana.easymarket.reviewsservice.repository.ReviewRepository;
 import co.edu.javeriana.easymarket.reviewsservice.repository.UserRepository;
@@ -19,6 +20,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.*;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,6 +38,9 @@ public class ReviewsServiceTest {
 
     @Mock
     private ProductRepository productRepository;
+
+    @Mock
+    private OrderRepository orderRepository;
 
     @Mock
     private ReviewMapper reviewMapper;
@@ -68,6 +73,7 @@ public class ReviewsServiceTest {
         CreateReviewDTO createReviewDTO = new CreateReviewDTO("productId", "userId", 4.5f, Optional.of("Good product"));
         when(userRepository.findById("userId")).thenReturn(Optional.of(new User()));
         when(productRepository.findById("productId")).thenReturn(Optional.of(product));
+        when(orderRepository.findOrdersByIdUser("userId")).thenReturn(Collections.emptyList());
 
         // Call service method to create review
         ReviewDTO result = reviewsService.createReview(createReviewDTO);
